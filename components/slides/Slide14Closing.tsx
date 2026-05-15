@@ -172,8 +172,8 @@ export default function Slide14Closing() {
         </div>
 
         <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-bold text-white leading-tight mb-3 pb-[0.08em] text-balance max-w-3xl">
-          我的核心价值，是把设计能力<br />
-          从<span className="text-[oklch(0.45_0_0)]">个体产出</span>升级为
+          我的核心价值，是组织专业能力培养，<br />
+          把设计能力从<span className="text-[oklch(0.45_0_0)]">个体产出</span>升级为
           <span className="text-[oklch(0.78_0.15_195)]">组织系统</span>
         </h2>
 
