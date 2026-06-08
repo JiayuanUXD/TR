@@ -33,10 +33,10 @@ export default function Slide02Understanding() {
           <span className="text-xs tracking-[0.2em] text-[oklch(0.78_0.15_195)] uppercase">02</span>
         </div>
         <h2 className="text-[clamp(1.8rem,3.5vw,3rem)] font-bold text-white leading-tight mb-3 text-balance">
-          如何理解设计管理
+          我如何理解设计管理
         </h2>
         <p className="text-[oklch(0.55_0_0)] text-base max-w-lg leading-relaxed">
-          设计管理不是分配任务，而是通过系统化的方法，让有限的设计资源产出可预期、可度量的价值，同时让团队持续成长
+          设计管理不是分配任务，而是同时搭建组织系统、协作系统和质量系统。
         </p>
       </div>
 

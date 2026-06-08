@@ -171,8 +171,8 @@ export default function Slide14Closing() {
           <span className="text-xs tracking-[0.25em] text-[oklch(0.78_0.15_195)] uppercase">Core Value</span>
         </div>
 
-        <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-bold text-white leading-tight mb-3 pb-[0.08em] text-balance max-w-3xl">
-          核心价值：把设计能力<br />
+        <h2 className="text-[clamp(2rem,4vw,3.5rem)] font-bold text-white leading-tight mb-3 text-balance max-w-3xl">
+          我的核心价值，是把设计能力<br />
           从<span className="text-[oklch(0.45_0_0)]">个体产出</span>升级为
           <span className="text-[oklch(0.78_0.15_195)]">组织系统</span>
         </h2>
@@ -187,7 +187,7 @@ export default function Slide14Closing() {
             <div key={p.sub} className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <div
-                  className="w-4 h-4 flex items-center justify-center text-[10px] font-bold leading-none pb-[1px]"
+                  className="w-4 h-4 flex items-center justify-center text-[10px] font-bold"
                   style={{ color: "oklch(0.78 0.15 195)", border: "1px solid oklch(0.78 0.15 195 / 0.4)" }}
                 >
                   {i + 1}

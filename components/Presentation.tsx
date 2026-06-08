@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import Slide01Cover from "./slides/Slide01Cover"
 import Slide02Understanding from "./slides/Slide02Understanding"
 import Slide03BusinessMap from "./slides/Slide03BusinessMap"
-import Slide04OrgStructureV2 from "./slides/Slide04OrgStructureV2"
+import Slide04OrgStructure from "./slides/Slide04OrgStructure"
 import Slide05Recruitment from "./slides/Slide05Recruitment"
 import Slide06Training from "./slides/Slide06Training"
 import Slide07Challenge from "./slides/Slide07Challenge"
@@ -20,7 +20,7 @@ const slides = [
   { id: 1, title: "封面", component: Slide01Cover },
   { id: 2, title: "如何理解设计管理", component: Slide02Understanding },
   { id: 3, title: "团队定位与业务版图", component: Slide03BusinessMap },
-  { id: 4, title: "组织架构设计", component: Slide04OrgStructureV2 },
+  { id: 4, title: "组织架构设计", component: Slide04OrgStructure },
   { id: 5, title: "招聘策略", component: Slide05Recruitment },
   { id: 6, title: "培养机制", component: Slide06Training },
   { id: 7, title: "高并发管理挑战", component: Slide07Challenge },
@@ -33,25 +33,53 @@ const slides = [
   { id: 14, title: "结尾总结", component: Slide14Closing },
 ]
 
+// Transition duration in ms
+const DURATION = 380
+
+// Separate component so React can unmount it cleanly after the animation
+function OutgoingSlide({ index, direction, duration }: { index: number; direction: 1 | -1; duration: number }) {
+  const Slide = slides[index].component
+  return (
+    <div
+      className="absolute inset-0"
+      style={{
+        animation: `slide-exit-${direction === 1 ? "fwd" : "bwd"} ${duration}ms cubic-bezier(0.4,0,0.6,1) forwards`,
+        zIndex: 1,
+        pointerEvents: "none",
+      }}
+    >
+      <Slide />
+    </div>
+  )
+}
+
 export default function Presentation() {
   const [current, setCurrent] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [prev2, setPrev2] = useState<number | null>(null) // previous slide index during transition
+  const [animating, setAnimating] = useState(false)
+  const [direction, setDirection] = useState<1 | -1>(1) // 1=forward, -1=backward
   const [showOverview, setShowOverview] = useState(false)
   const [overviewVisible, setOverviewVisible] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
+  const wheelLock = useRef(false)
 
   const goTo = useCallback(
-    (index: number) => {
-      if (isTransitioning) return
+    (index: number, dir?: 1 | -1) => {
+      if (animating) return
       const target = ((index % slides.length) + slides.length) % slides.length
-      setIsTransitioning(true)
+      if (target === current) return
+      const resolvedDir = dir ?? (target > current ? 1 : -1)
+      setDirection(resolvedDir)
+      setPrev2(current)       // freeze outgoing slide
+      setCurrent(target)      // immediately switch so incoming renders correctly
+      setAnimating(true)
       setTimeout(() => {
-        setCurrent(target)
-        setIsTransitioning(false)
-      }, 200)
+        setAnimating(false)
+        setPrev2(null)
+      }, DURATION)
     },
-    [isTransitioning]
+    [animating, current]
   )
 
   // Animate overview in/out via a separate visibility flag
@@ -69,14 +97,16 @@ export default function Presentation() {
   const goToFromOverview = useCallback(
     (index: number) => {
       setCurrent(index)
+      setPrev2(null)
+      setAnimating(false)
       setOverviewVisible(false)
       setTimeout(() => setShowOverview(false), 300)
     },
     []
   )
 
-  const prev = useCallback(() => goTo(current - 1), [current, goTo])
-  const next = useCallback(() => goTo(current + 1), [current, goTo])
+  const prev = useCallback(() => goTo(current - 1, -1), [current, goTo])
+  const next = useCallback(() => goTo(current + 1,  1), [current, goTo])
 
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -92,6 +122,21 @@ export default function Presentation() {
     document.addEventListener("fullscreenchange", onFsChange)
     return () => document.removeEventListener("fullscreenchange", onFsChange)
   }, [])
+
+  // Wheel navigation — throttled so one scroll = one page
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (showOverview) return
+      if (wheelLock.current) return
+      if (Math.abs(e.deltaY) < 30) return
+      wheelLock.current = true
+      setTimeout(() => { wheelLock.current = false }, DURATION + 200)
+      if (e.deltaY > 0) next()
+      else prev()
+    }
+    window.addEventListener("wheel", handleWheel, { passive: true })
+    return () => window.removeEventListener("wheel", handleWheel)
+  }, [next, prev, showOverview])
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -140,10 +185,25 @@ export default function Presentation() {
 
       {/* Main slide area */}
       <div className="relative flex-1 overflow-hidden">
-        {/* Slide content */}
+        {/*
+          Dual-layer transition:
+          - Layer A (z:1): outgoing slide — plays exit animation, removed after DURATION
+          - Layer B (z:2): incoming slide — plays enter animation, stays as idle layer
+        */}
+
+        {/* Outgoing layer — rendered only during animation */}
+        {animating && prev2 !== null && <OutgoingSlide index={prev2} direction={direction} duration={DURATION} />}
+
+        {/* Incoming / current layer */}
         <div
-          className="absolute inset-0 transition-opacity duration-200 slide-container"
-          style={{ opacity: isTransitioning ? 0 : 1 }}
+          key={`in-${current}`}
+          className="absolute inset-0"
+          style={{
+            animation: animating
+              ? `slide-enter-${direction === 1 ? "fwd" : "bwd"} ${DURATION}ms cubic-bezier(0.22,1,0.36,1) forwards`
+              : "none",
+            zIndex: 2,
+          }}
         >
           <CurrentSlide />
         </div>
@@ -266,12 +326,11 @@ export default function Presentation() {
         <div
           className="absolute inset-0 z-50 transition-opacity duration-300 ease-in-out"
           style={{ opacity: overviewVisible ? 1 : 0 }}
-          onClick={toggleOverview}
         >
           {/* Backdrop — true full-screen click target, sits behind everything */}
           <div
-            className="absolute inset-0 cursor-default backdrop-blur-2xl"
-            style={{ backgroundColor: "oklch(0.02 0 0 / 0.65)" }}
+            className="absolute inset-0 cursor-default"
+            style={{ backgroundColor: "oklch(0.05 0 0 / 0.97)" }}
             onClick={toggleOverview}
           />
 
@@ -296,11 +355,12 @@ export default function Presentation() {
             </div>
 
             {/* Scroll area — overflows vertically, propagation stopped only on the grid wrapper */}
-            <div className="relative z-10 flex-1 overflow-y-auto p-8">
+            <div className="relative z-10 flex-1 overflow-y-auto p-8" onClick={(e) => e.stopPropagation()}>
               <div
-                className="grid gap-6 w-full"
+                className="grid gap-5 mx-auto"
                 style={{
-                  gridTemplateColumns: "repeat(auto-fill, minmax(clamp(240px, 18vw, 360px), 1fr))",
+                  gridTemplateColumns: "repeat(auto-fill, clamp(160px, 18vw, 280px))",
+                  maxWidth: "1200px",
                 }}
               >
                 {slides.map((slide, i) => {
@@ -309,10 +369,7 @@ export default function Presentation() {
                   return (
                     <button
                       key={slide.id}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        goToFromOverview(i)
-                      }}
+                      onClick={() => goToFromOverview(i)}
                       aria-label={`跳转到第 ${i + 1} 页：${slide.title}`}
                       className="group flex flex-col gap-2 text-left transition-all duration-150"
                     >

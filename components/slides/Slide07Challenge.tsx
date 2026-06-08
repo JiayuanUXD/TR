@@ -38,7 +38,7 @@ export default function Slide07Challenge() {
       {/* Triangle diagram — fully SVG, scales with container */}
       <div className="relative z-10 flex-1 flex items-center justify-center w-full">
         <svg
-          viewBox="0 -20 600 480"
+          viewBox="0 0 600 460"
           className="w-full max-w-3xl h-auto"
           style={{ maxHeight: "calc(100% - 24px)" }}
           aria-label="不可能三角示意图：人力、需求、质量"
