@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import Slide01Cover from "./slides/Slide01Cover"
 import Slide02Understanding from "./slides/Slide02Understanding"
 import Slide03BusinessMap from "./slides/Slide03BusinessMap"
-import Slide04OrgStructure from "./slides/Slide04OrgStructure"
+import Slide04OrgStructureV2 from "./slides/Slide04OrgStructureV2"
 import Slide05Recruitment from "./slides/Slide05Recruitment"
 import Slide06Training from "./slides/Slide06Training"
 import Slide07Challenge from "./slides/Slide07Challenge"
@@ -20,7 +20,7 @@ const slides = [
   { id: 1, title: "封面", component: Slide01Cover },
   { id: 2, title: "如何理解设计管理", component: Slide02Understanding },
   { id: 3, title: "团队定位与业务版图", component: Slide03BusinessMap },
-  { id: 4, title: "组织架构设计", component: Slide04OrgStructure },
+  { id: 4, title: "组织架构设计", component: Slide04OrgStructureV2 },
   { id: 5, title: "招聘策略", component: Slide05Recruitment },
   { id: 6, title: "培养机制", component: Slide06Training },
   { id: 7, title: "高并发管理挑战", component: Slide07Challenge },

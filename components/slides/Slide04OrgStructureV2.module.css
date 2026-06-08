@@ -1,0 +1,409 @@
+/* ─── Slide root ──────────────────────────────────────────────── */
+
+.root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: oklch(0.08 0 0);
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 64px 64px 32px;
+  flex-shrink: 0;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.indicatorLine {
+  width: 20px;
+  height: 1px;
+  background: oklch(0.78 0.15 195);
+}
+
+.indicatorText {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: oklch(0.78 0.15 195);
+}
+
+.heading {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: white;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  margin-bottom: 12px;
+}
+
+.headingAccent {
+  color: oklch(0.78 0.15 195);
+}
+
+.subheading {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: oklch(0.55 0 0);
+}
+
+/* ─── Metric cards ────────────────────────────────────────────── */
+
+.metrics {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.metricCard {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid oklch(0.20 0 0);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+  width: 176px;
+  flex-shrink: 0;
+}
+
+.metricKey {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  color: oklch(0.40 0 0);
+}
+
+.metricValue {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin-top: 2px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: white;
+}
+.metricValue[data-hi="1"] { color: oklch(0.78 0.15 195); }
+.metricValue[data-hi="2"] { color: #60a5fa; }
+
+.metricUnit {
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: 4px;
+  color: oklch(0.52 0 0);
+}
+
+.metricNote {
+  font-size: 10px;
+  margin-top: 6px;
+  line-height: 1.4;
+  color: oklch(0.46 0 0);
+}
+
+/* ─── Body (3-col grid) ───────────────────────────────────────── */
+
+.body {
+  position: relative;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 320px 1fr;
+  padding: 0 64px;
+  gap: 72px;
+  min-height: 0;
+}
+
+/* ─── Card column ─────────────────────────────────────────────── */
+
+.cardCol {
+  display: grid;
+  gap: 10px;
+  grid-template-rows: repeat(3, 1fr);
+}
+
+/* ─── Business Card ───────────────────────────────────────────── */
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: oklch(0.10 0 0);
+  border: 1px solid oklch(0.22 0 0);
+  padding: 14px 14px 12px;
+}
+
+.cardEyebrow {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+  color: oklch(0.42 0 0);
+}
+
+.cardBadge {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 1px 8px;
+  border-radius: 9999px;
+  border: 1px solid;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Side-specific badge colors via parent variant class */
+.left .cardBadge {
+  color: oklch(0.78 0.15 195);
+  border-color: rgba(94, 234, 212, 0.3);
+}
+.right .cardBadge {
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.3);
+}
+
+.sectionLabel {
+  font-size: 8.5px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  color: oklch(0.37 0 0);
+}
+
+/* Neutral chips (inside sections with sub-labels) */
+.neutralChip {
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid oklch(0.20 0 0);
+  background: rgba(255, 255, 255, 0.025);
+  color: oklch(0.62 0 0);
+}
+
+/* Accent chips (top-level, side-colored) */
+.accentChip {
+  font-size: 9.5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+.left .accentChip {
+  color: oklch(0.78 0.15 195);
+  border-color: rgba(94, 234, 212, 0.28);
+  background: rgba(94, 234, 212, 0.06);
+}
+.right .accentChip {
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.28);
+  background: rgba(96, 165, 250, 0.06);
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid oklch(0.17 0 0);
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: oklch(0.38 0 0);
+}
+
+.cardCount {
+  font-weight: 700;
+}
+.left .cardCount  { color: oklch(0.78 0.15 195); }
+.right .cardCount { color: #60a5fa; }
+
+/* ─── Designer Pool ───────────────────────────────────────────── */
+
+.pool {
+  position: relative;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(94,234,212,0.07), rgba(255,255,255,0.015));
+  border: 1px solid rgba(94, 234, 212, 0.28);
+  box-shadow:
+    0 0 0 1px rgba(94, 234, 212, 0.04),
+    0 30px 90px -30px rgba(94, 234, 212, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 28px 16px;
+}
+
+.poolGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(320px 160px at 50% 0%, rgba(94,234,212,0.15), transparent 70%),
+    radial-gradient(320px 140px at 50% 100%, rgba(96,165,250,0.08), transparent 70%);
+}
+
+/* Section 1 – Title */
+.poolSection1 {
+  position: relative;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.poolLabel {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.14em;
+  margin-bottom: 4px;
+  color: oklch(0.78 0.15 195);
+}
+
+.poolTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.poolTitleAccent {
+  color: oklch(0.78 0.15 195);
+}
+
+.poolSubtitle {
+  font-size: 10.5px;
+  margin-top: 2px;
+  line-height: 1.6;
+  color: oklch(0.50 0 0);
+}
+
+/* Section 2 – Designers */
+.poolSection2 {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 54px);
+  gap: 12px;
+}
+
+.avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  border-radius: 9999px;
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(135deg, #1e2730, #131820);
+  border: 1px solid rgba(94, 234, 212, 0.35);
+  color: oklch(0.78 0.15 195);
+  font-size: 11px;
+  box-shadow: 0 0 14px rgba(94,234,212,0.10), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.avatarDot {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: oklch(0.78 0.15 195);
+  border: 2px solid oklch(0.10 0 0);
+  box-shadow: 0 0 6px oklch(0.78 0.15 195);
+}
+
+/* Section 3 – Capability */
+.poolSection3 {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.skillGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.skillCell {
+  text-align: center;
+  padding: 6px 0;
+  border-radius: 8px;
+  border: 1px solid oklch(0.19 0 0);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.skillKey {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  color: oklch(0.40 0 0);
+}
+
+.skillVal {
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 1px;
+  color: oklch(0.78 0 0);
+}
+
+.poolFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding-top: 8px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  border-top: 1px dashed rgba(94, 234, 212, 0.18);
+  color: oklch(0.38 0 0);
+}
+
+.poolStatus {
+  color: oklch(0.78 0.15 195);
+}
+
+/* ─── Footer band ─────────────────────────────────────────────── */
+
+.footerBand {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 64px 16px;
+  font-size: 9px;
+  font-family: var(--font-mono);
+  color: oklch(0.35 0 0);
+  flex-shrink: 0;
+}
+
+.footerLegend {
+  display: flex;
+  gap: 20px;
+}
+
+.footerItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footerDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+}
